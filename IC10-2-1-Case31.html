@@ -1,0 +1,3595 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Carmen Lia Jimenez Rodriguez">
+
+<title>IC10-2-1: Data Preparation with Case 31</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="IC10-2-1-Case31_files/libs/clipboard/clipboard.min.js"></script>
+<script src="IC10-2-1-Case31_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="IC10-2-1-Case31_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="IC10-2-1-Case31_files/libs/quarto-html/popper.min.js"></script>
+<script src="IC10-2-1-Case31_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="IC10-2-1-Case31_files/libs/quarto-html/anchor.min.js"></script>
+<link href="IC10-2-1-Case31_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="IC10-2-1-Case31_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="IC10-2-1-Case31_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="IC10-2-1-Case31_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="IC10-2-1-Case31_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">IC10-2-1: Data Preparation with Case 31</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Carmen Lia Jimenez Rodriguez </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="importing-the-spss-dataset" class="level1">
+<h1>1. Importing the SPSS Dataset</h1>
+<p>This report documents the preparation and cleaning of the Employees Federal Credit Union (EFCU) survey dataset using R.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'haven' was built under R version 4.5.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">"Case 31 Data_efcu_1.sav"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128  34</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "q3"                        "q4"                       
+ [3] "q5"                        "q6"                       
+ [5] "q7"                        "q8"                       
+ [7] "q9"                        "q10"                      
+ [9] "q11"                       "q12"                      
+[11] "q13"                       "q14"                      
+[13] "q15"                       "q16"                      
+[15] "q17"                       "q18"                      
+[17] "q19"                       "q20"                      
+[19] "q21"                       "q22"                      
+[21] "q23"                       "q24"                      
+[23] "q25"                       "q26"                      
+[25] "q27"                       "q30"                      
+[27] "q31"                       "q32"                      
+[29] "q33"                       "q34"                      
+[31] "q37"                       "OverallEmployeePerformace"
+[33] "q38"                       "employeeperformance"      </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 34
+  q3        q4     q5    q6    q7       q8       q9      q10     q11     q12    
+  &lt;dbl+lbl&gt; &lt;dbl+&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lb&gt; &lt;dbl+lb&gt; &lt;dbl+l&gt; &lt;dbl+l&gt; &lt;dbl+l&gt; &lt;dbl+l&gt;
+1 4         4      4     4      2 [Hig…  4 [Low] 3 [Abo… 1 [Exc… 1 [Yes] 1 [Yes]
+2 4         4      4     4      3 [Ave…  3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes] 1 [Yes]
+3 4         4      4     4      3 [Ave… NA       3 [Abo… 1 [Exc… 1 [Yes] 1 [Yes]
+4 4         4      3     4     NA        3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes] 2 [No] 
+5 4         4      4     4      2 [Hig…  4 [Low] 3 [Abo… 2 [Goo… 1 [Yes] 3      
+6 4         4      4     4      3 [Ave…  3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes] 2 [No] 
+# ℹ 24 more variables: q13 &lt;dbl+lbl&gt;, q14 &lt;dbl+lbl&gt;, q15 &lt;dbl+lbl&gt;,
+#   q16 &lt;dbl+lbl&gt;, q17 &lt;dbl+lbl&gt;, q18 &lt;dbl+lbl&gt;, q19 &lt;dbl+lbl&gt;, q20 &lt;dbl+lbl&gt;,
+#   q21 &lt;dbl+lbl&gt;, q22 &lt;dbl+lbl&gt;, q23 &lt;dbl+lbl&gt;, q24 &lt;dbl+lbl&gt;, q25 &lt;dbl+lbl&gt;,
+#   q26 &lt;dbl+lbl&gt;, q27 &lt;dbl+lbl&gt;, q30 &lt;dbl+lbl&gt;, q31 &lt;dbl+lbl&gt;, q32 &lt;dbl+lbl&gt;,
+#   q33 &lt;dbl+lbl&gt;, q34 &lt;dbl+lbl&gt;, q37 &lt;dbl+lbl&gt;,
+#   OverallEmployeePerformace &lt;dbl&gt;, q38 &lt;dbl+lbl&gt;, employeeperformance &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="initial-data-inspection" class="level1">
+<h1>2. Initial Data Inspection</h1>
+<p>The dataset is examined to identify variable types, labels, and missing values before data cleaning.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine dataset structure</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [128 × 34] (S3: tbl_df/tbl/data.frame)
+ $ q3                       : dbl+lbl [1:128] 4, 4, 4, 4, 4, 4, 5, 5, 5, 4, 5, 4, 5, 4, 4, 4, 5, 5, ...
+   ..@ label      : chr "Employees are Courteous"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q4                       : dbl+lbl [1:128] 4, 4, 4, 4, 4, 4, 5, 5, 5, 4, 5, 4, 5, 3, 4, 4, 5, 5, ...
+   ..@ label      : chr "employees are helpful"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q5                       : dbl+lbl [1:128] 4, 4, 4, 3, 4, 4, 5, 4, 5, 4, 5, 4, 4, 4, 3, 4, 5, 5, ...
+   ..@ label      : chr "employees are professional"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q6                       : dbl+lbl [1:128] 4, 4, 4, 4, 4, 4, 5, 4, 5, 4, 5, 4, 4, 3, 3, 4, 5, 5, ...
+   ..@ label      : chr "employees are available"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q7                       : dbl+lbl [1:128]  2,  3,  3, NA,  2,  3,  2,  3,  3,  2,  2,  2,  4,  3...
+   ..@ label      : chr "savings rates"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:6] 1 2 3 4 5 6
+   .. ..- attr(*, "names")= chr [1:6] "Very High" "High" "Average" "Low" ...
+ $ q8                       : dbl+lbl [1:128]  4,  3, NA,  3,  4,  3,  3,  3,  3,  3,  4, NA,  2,  3...
+   ..@ label      : chr "statement frequency"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:6] 1 2 3 4 5 6
+   .. ..- attr(*, "names")= chr [1:6] "Very High" "High" "Average" "Low" ...
+ $ q9                       : dbl+lbl [1:128] 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 3, ...
+   ..@ label      : chr "statement frequency"
+   ..@ format.spss: chr "F6.2"
+   ..@ labels     : Named num [1:5] 1 2 3 4 5
+   .. ..- attr(*, "names")= chr [1:5] "Too Often" "Very Often" "About Right" "Not Often Enough" ...
+ $ q10                      : dbl+lbl [1:128] 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 2, 1, 2, ...
+   ..@ label      : chr "statement accuracy"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:4] 1 2 3 4
+   .. ..- attr(*, "names")= chr [1:4] "Excellent" "Good" "Fair" "Poor"
+ $ q11                      : dbl+lbl [1:128] 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+   ..@ label      : chr "statement understandable"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Yes" "No"
+ $ q12                      : dbl+lbl [1:128] 1, 1, 1, 2, 3, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, ...
+   ..@ label      : chr "Account Confidential"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Yes" "No"
+ $ q13                      : dbl+lbl [1:128] 1, 3, 3, 2, 3, 2, 2, 2, 3, 2, 3, 2, 2, 3, 3, 3, 3, 1, ...
+   ..@ label      : chr "regular share account"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q14                      : dbl+lbl [1:128] 2, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, ...
+   ..@ label      : chr "special subaccounts"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q15                      : dbl+lbl [1:128] 2, 2, 2, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 2, 2, 2, 1, ...
+   ..@ label      : chr "Christmas club account"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q16                      : dbl+lbl [1:128] 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 1, 1, 3, 3, 2, 1, 1, ...
+   ..@ label      : chr "IRA"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q17                      : dbl+lbl [1:128] 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, ...
+   ..@ label      : chr "Master credit card"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q18                      : dbl+lbl [1:128] 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, ...
+   ..@ label      : chr "signature loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q19                      : dbl+lbl [1:128] 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 1, ...
+   ..@ label      : chr "new car loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q20                      : dbl+lbl [1:128] 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, ...
+   ..@ label      : chr "late model car loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q21                      : dbl+lbl [1:128] 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 1, 2, 2, 2, 3, 2, 2, 2, ...
+   ..@ label      : chr "older model car loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q22                      : dbl+lbl [1:128] 2, 3, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 3, 3, 2, 2, 1, ...
+   ..@ label      : chr "household goods loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q23                      : dbl+lbl [1:128] 2, 1, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 3, 2, 2, 1, ...
+   ..@ label      : chr "recreational loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q24                      : dbl+lbl [1:128] 3, 3, 3, 2, 2, 2, 2, 2, 3, 1, 2, 2, 2, 3, 2, 2, 2, 2, ...
+   ..@ label      : chr "share collateralized loan"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q25                      : dbl+lbl [1:128] 3, 3, 2, 2, 2, 2, 2, 3, 3, 2, 2, 3, 2, 3, 3, 3, 2, 2, ...
+   ..@ label      : chr "IRA loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q26                      : dbl+lbl [1:128] 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, ...
+   ..@ label      : chr "line of credit loans"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Aware and Have Used" "Aware but Have Not Used"
+ $ q27                      : dbl+lbl [1:128] 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, ...
+   ..@ label      : chr "currently have loan"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "Yes" "No"
+ $ q30                      : dbl+lbl [1:128] 4, 3, 2, 4, 4, 4, 4, 3, 4, 4, 4, 4, 2, 3, 3, 2, 3, 5, ...
+   ..@ label      : chr "CU rates lower"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q31                      : dbl+lbl [1:128] 4, 3, 3, 3, 4, 4, 5, 4, 4, 4, 5, 3, 4, 4, 4, 3, 4, 5, ...
+   ..@ label      : chr "CU confidential"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q32                      : dbl+lbl [1:128] 4, 4, 3, 4, 4, 4, 4, 4, 5, 4, 5, 3, 3, 4, 3, 4, 5, 5, ...
+   ..@ label      : chr "CU is prompt"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q33                      : dbl+lbl [1:128] 4, 3, 3, 4, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 3, 3, 4, 2, ...
+   ..@ label      : chr "CU meets needs of members"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q34                      : dbl+lbl [1:128] 4, 4, 3, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4, 4, ...
+   ..@ label      : chr "CU loan applications simple"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:2] 1 5
+   .. ..- attr(*, "names")= chr [1:2] "Strongly Disagree" "Strongly Agree"
+ $ q37                      : dbl+lbl [1:128]  2,  2,  3, NA,  2,  3,  1,  2,  1,  2,  1,  1, NA,  2...
+   ..@ label      : chr "overall rating"
+   ..@ format.spss: chr "F7.2"
+   ..@ labels     : Named num [1:6] 1 2 3 4 5 6
+   .. ..- attr(*, "names")= chr [1:6] "Excellent" "Good" "Average" "Poor" ...
+ $ OverallEmployeePerformace: num [1:128] 4 4 4 3.75 4 4 5 4.5 5 4 ...
+  ..- attr(*, "format.spss")= chr "F8.2"
+  ..- attr(*, "display_width")= int 27
+ $ q38                      : dbl+lbl [1:128] 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ...
+   ..@ label      : chr "headquarter"
+   ..@ format.spss: chr "F8.2"
+   ..@ labels     : Named num [1:2] 1 2
+   .. ..- attr(*, "names")= chr [1:2] "yes" "no"
+ $ employeeperformance      : num [1:128] 4 4 4 3.75 4 4 5 4.5 5 4 ...
+  ..- attr(*, "format.spss")= chr "F8.2"
+  ..- attr(*, "display_width")= int 21</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine variable labels</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(data_raw, <span class="cf">function</span>(x) <span class="fu">attr</span>(x, <span class="st">"label"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$q3
+[1] "Employees are Courteous"
+
+$q4
+[1] "employees are helpful"
+
+$q5
+[1] "employees are professional"
+
+$q6
+[1] "employees are available"
+
+$q7
+[1] "savings rates"
+
+$q8
+[1] "statement frequency"
+
+$q9
+[1] "statement frequency"
+
+$q10
+[1] "statement accuracy"
+
+$q11
+[1] "statement understandable"
+
+$q12
+[1] "Account Confidential"
+
+$q13
+[1] "regular share account"
+
+$q14
+[1] "special subaccounts"
+
+$q15
+[1] "Christmas club account"
+
+$q16
+[1] "IRA"
+
+$q17
+[1] "Master credit card"
+
+$q18
+[1] "signature loans"
+
+$q19
+[1] "new car loans"
+
+$q20
+[1] "late model car loans"
+
+$q21
+[1] "older model car loans"
+
+$q22
+[1] "household goods loans"
+
+$q23
+[1] "recreational loans"
+
+$q24
+[1] "share collateralized loan"
+
+$q25
+[1] "IRA loans"
+
+$q26
+[1] "line of credit loans"
+
+$q27
+[1] "currently have loan"
+
+$q30
+[1] "CU rates lower"
+
+$q31
+[1] "CU confidential"
+
+$q32
+[1] "CU is prompt"
+
+$q33
+[1] "CU meets needs of members"
+
+$q34
+[1] "CU loan applications simple"
+
+$q37
+[1] "overall rating"
+
+$OverallEmployeePerformace
+NULL
+
+$q38
+[1] "headquarter"
+
+$employeeperformance
+NULL</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count missing values by variable</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data_raw))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       q3                        q4                        q5 
+                        0                         0                         0 
+                       q6                        q7                        q8 
+                        0                        10                        21 
+                       q9                       q10                       q11 
+                        0                         0                         0 
+                      q12                       q13                       q14 
+                        0                         0                         0 
+                      q15                       q16                       q17 
+                        0                         0                         0 
+                      q18                       q19                       q20 
+                        0                         0                         0 
+                      q21                       q22                       q23 
+                        0                         0                         0 
+                      q24                       q25                       q26 
+                        0                         0                         0 
+                      q27                       q30                       q31 
+                        0                         0                         0 
+                      q32                       q33                       q34 
+                        0                         0                         0 
+                      q37 OverallEmployeePerformace                       q38 
+                        7                         0                         0 
+      employeeperformance 
+                        0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine descriptive statistics</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       q3              q4              q5              q6       
+ Min.   :3.000   Min.   :2.000   Min.   :3.000   Min.   :2.000  
+ 1st Qu.:4.000   1st Qu.:4.000   1st Qu.:4.000   1st Qu.:4.000  
+ Median :4.000   Median :4.000   Median :4.000   Median :4.000  
+ Mean   :4.352   Mean   :4.312   Mean   :4.078   Mean   :4.078  
+ 3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:5.000  
+ Max.   :5.000   Max.   :5.000   Max.   :5.000   Max.   :5.000  
+                                                                
+       q7              q8             q9             q10             q11       
+ Min.   :2.000   Min.   :1.00   Min.   :3.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:3.000   1st Qu.:2.00   1st Qu.:3.000   1st Qu.:1.000   1st Qu.:1.000  
+ Median :3.000   Median :3.00   Median :3.000   Median :1.000   Median :1.000  
+ Mean   :2.932   Mean   :2.86   Mean   :3.227   Mean   :1.531   Mean   :1.023  
+ 3rd Qu.:3.000   3rd Qu.:3.00   3rd Qu.:3.000   3rd Qu.:2.000   3rd Qu.:1.000  
+ Max.   :5.000   Max.   :5.00   Max.   :4.000   Max.   :4.000   Max.   :2.000  
+ NA's   :10      NA's   :21                                                    
+      q12             q13             q14             q15       
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:1.000   1st Qu.:2.000   1st Qu.:2.000   1st Qu.:2.000  
+ Median :1.000   Median :3.000   Median :2.000   Median :2.000  
+ Mean   :1.594   Mean   :2.547   Mean   :2.266   Mean   :2.242  
+ 3rd Qu.:2.000   3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:3.000  
+ Max.   :3.000   Max.   :3.000   Max.   :3.000   Max.   :3.000  
+                                                                
+      q16             q17            q18             q19             q20       
+ Min.   :1.000   Min.   :1.00   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:2.000   1st Qu.:1.00   1st Qu.:2.000   1st Qu.:2.000   1st Qu.:2.000  
+ Median :2.000   Median :2.00   Median :2.000   Median :2.000   Median :2.000  
+ Mean   :2.047   Mean   :1.68   Mean   :1.891   Mean   :1.852   Mean   :1.984  
+ 3rd Qu.:3.000   3rd Qu.:2.00   3rd Qu.:2.000   3rd Qu.:2.000   3rd Qu.:2.000  
+ Max.   :3.000   Max.   :3.00   Max.   :3.000   Max.   :3.000   Max.   :3.000  
+                                                                               
+      q21             q22             q23             q24       
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:2.000   1st Qu.:2.000   1st Qu.:2.000   1st Qu.:2.000  
+ Median :2.000   Median :2.000   Median :2.000   Median :3.000  
+ Mean   :2.164   Mean   :2.203   Mean   :2.328   Mean   :2.523  
+ 3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:3.000  
+ Max.   :3.000   Max.   :3.000   Max.   :3.000   Max.   :3.000  
+                                                                
+      q25             q26             q27             q30       
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:2.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:3.000  
+ Median :3.000   Median :2.000   Median :2.000   Median :3.000  
+ Mean   :2.578   Mean   :1.625   Mean   :1.547   Mean   :3.062  
+ 3rd Qu.:3.000   3rd Qu.:2.000   3rd Qu.:2.000   3rd Qu.:4.000  
+ Max.   :3.000   Max.   :2.000   Max.   :2.000   Max.   :5.000  
+                                                                
+      q31             q32             q33             q34       
+ Min.   :1.000   Min.   :2.000   Min.   :2.000   Min.   :1.000  
+ 1st Qu.:4.000   1st Qu.:3.000   1st Qu.:3.000   1st Qu.:3.000  
+ Median :4.000   Median :4.000   Median :4.000   Median :4.000  
+ Mean   :3.945   Mean   :3.719   Mean   :3.594   Mean   :3.461  
+ 3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.000  
+ Max.   :5.000   Max.   :5.000   Max.   :5.000   Max.   :5.000  
+                                                                
+      q37        OverallEmployeePerformace      q38        employeeperformance
+ Min.   :1.000   Min.   :2.750             Min.   :1.000   Min.   :2.750      
+ 1st Qu.:1.000   1st Qu.:4.000             1st Qu.:1.000   1st Qu.:4.000      
+ Median :2.000   Median :4.000             Median :2.000   Median :4.000      
+ Mean   :1.934   Mean   :4.205             Mean   :1.555   Mean   :4.205      
+ 3rd Qu.:2.000   3rd Qu.:4.750             3rd Qu.:2.000   3rd Qu.:4.750      
+ Max.   :5.000   Max.   :5.000             Max.   :2.000   Max.   :5.000      
+ NA's   :7                                                                    </code></pre>
+</div>
+</div>
+<section id="initial-data-inspection-questions-and-answers" class="level2">
+<h2 class="anchored" data-anchor-id="initial-data-inspection-questions-and-answers">2. Initial Data Inspection: Questions and Answers</h2>
+<p><strong>1. How many rows and columns are in the imported data?</strong></p>
+<p>The imported dataset contains 128 rows (observations) and 34 columns (variables).</p>
+<p><strong>2. What are the variable names?</strong></p>
+<p>The dataset contains questionnaire variables q3 through q27, q30 through q34, q37, and q38, as well as two precomputed variables: OverallEmployeePerformace and employeeperformance.</p>
+<p><strong>3. Which variables look like questionnaire items, and which look like precomputed variables?</strong></p>
+<p>The variables beginning with “q” represent individual questionnaire items. OverallEmployeePerformace and employeeperformance appear to be precomputed measures of employee performance.</p>
+<p><strong>4. What is the difference between a variable label and a value label?</strong></p>
+<p>A variable label describes what a variable measures, while a value label explains the meaning of a specific numerical response. For example, q3 measures employee courtesy, and the values 1 and 5 represent “Strongly Disagree” and “Strongly Agree.”</p>
+<p><strong>5. Which variables contain missing values?</strong></p>
+<p>Three variables contain missing values: q7 has 10 missing observations, q8 has 21, and q37 has 7. These missing responses must be considered during data cleaning.</p>
+</section>
+</section>
+<section id="data-dictionary" class="level1">
+<h1>3. Data Dictionary</h1>
+<p>The following table documents the original SPSS variables, their descriptive labels, data types, distinct values, and response categories.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.0     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gt' was built under R version 4.5.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data_dictionary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(data_raw),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable_label =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) {</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      label <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">"label"</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(label)) <span class="st">""</span> <span class="cf">else</span> label</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) <span class="fu">class</span>(x)[<span class="dv">1</span>]</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_distinct =</span> <span class="fu">map_int</span>(</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) <span class="fu">n_distinct</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">value_labels =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) {</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>      labs <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">"labels"</span>)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(labs)) {</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">""</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste</span>(</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste0</span>(labs, <span class="st">" = "</span>, <span class="fu">names</span>(labs)),</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>          <span class="at">collapse =</span> <span class="st">"; "</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>data_dictionary <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="kjxjvgjdxd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kjxjvgjdxd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kjxjvgjdxd thead, #kjxjvgjdxd tbody, #kjxjvgjdxd tfoot, #kjxjvgjdxd tr, #kjxjvgjdxd td, #kjxjvgjdxd th {
+  border-style: none;
+}
+
+#kjxjvgjdxd p {
+  margin: 0;
+  padding: 0;
+}
+
+#kjxjvgjdxd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kjxjvgjdxd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kjxjvgjdxd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kjxjvgjdxd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kjxjvgjdxd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kjxjvgjdxd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kjxjvgjdxd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kjxjvgjdxd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kjxjvgjdxd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kjxjvgjdxd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kjxjvgjdxd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kjxjvgjdxd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kjxjvgjdxd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kjxjvgjdxd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kjxjvgjdxd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kjxjvgjdxd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kjxjvgjdxd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kjxjvgjdxd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kjxjvgjdxd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kjxjvgjdxd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kjxjvgjdxd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kjxjvgjdxd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kjxjvgjdxd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kjxjvgjdxd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kjxjvgjdxd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kjxjvgjdxd .gt_left {
+  text-align: left;
+}
+
+#kjxjvgjdxd .gt_center {
+  text-align: center;
+}
+
+#kjxjvgjdxd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kjxjvgjdxd .gt_font_normal {
+  font-weight: normal;
+}
+
+#kjxjvgjdxd .gt_font_bold {
+  font-weight: bold;
+}
+
+#kjxjvgjdxd .gt_font_italic {
+  font-style: italic;
+}
+
+#kjxjvgjdxd .gt_super {
+  font-size: 65%;
+}
+
+#kjxjvgjdxd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kjxjvgjdxd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kjxjvgjdxd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kjxjvgjdxd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kjxjvgjdxd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kjxjvgjdxd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kjxjvgjdxd .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#kjxjvgjdxd .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#kjxjvgjdxd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="variable_label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable_label</th>
+<th id="class" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">class</th>
+<th id="n_distinct" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">n_distinct</th>
+<th id="value_labels" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">value_labels</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q3</td>
+<td class="gt_row gt_left" headers="variable_label">Employees are Courteous</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q4</td>
+<td class="gt_row gt_left" headers="variable_label">employees are helpful</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q5</td>
+<td class="gt_row gt_left" headers="variable_label">employees are professional</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q6</td>
+<td class="gt_row gt_left" headers="variable_label">employees are available</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q7</td>
+<td class="gt_row gt_left" headers="variable_label">savings rates</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Very High; 2 = High; 3 = Average; 4 = Low; 5 = Very Low; 6 = No Opinion</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q8</td>
+<td class="gt_row gt_left" headers="variable_label">statement frequency</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">5</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Very High; 2 = High; 3 = Average; 4 = Low; 5 = Very Low; 6 = No Opinion</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q9</td>
+<td class="gt_row gt_left" headers="variable_label">statement frequency</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">2</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Too Often; 2 = Very Often; 3 = About Right; 4 = Not Often Enough; 5 = Never</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q10</td>
+<td class="gt_row gt_left" headers="variable_label">statement accuracy</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Excellent; 2 = Good; 3 = Fair; 4 = Poor</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q11</td>
+<td class="gt_row gt_left" headers="variable_label">statement understandable</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">2</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Yes; 2 = No</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q12</td>
+<td class="gt_row gt_left" headers="variable_label">Account Confidential</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Yes; 2 = No</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q13</td>
+<td class="gt_row gt_left" headers="variable_label">regular share account</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q14</td>
+<td class="gt_row gt_left" headers="variable_label">special subaccounts</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q15</td>
+<td class="gt_row gt_left" headers="variable_label">Christmas club account</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q16</td>
+<td class="gt_row gt_left" headers="variable_label">IRA</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q17</td>
+<td class="gt_row gt_left" headers="variable_label">Master credit card</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q18</td>
+<td class="gt_row gt_left" headers="variable_label">signature loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q19</td>
+<td class="gt_row gt_left" headers="variable_label">new car loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q20</td>
+<td class="gt_row gt_left" headers="variable_label">late model car loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q21</td>
+<td class="gt_row gt_left" headers="variable_label">older model car loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q22</td>
+<td class="gt_row gt_left" headers="variable_label">household goods loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q23</td>
+<td class="gt_row gt_left" headers="variable_label">recreational loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q24</td>
+<td class="gt_row gt_left" headers="variable_label">share collateralized loan</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q25</td>
+<td class="gt_row gt_left" headers="variable_label">IRA loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">3</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q26</td>
+<td class="gt_row gt_left" headers="variable_label">line of credit loans</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">2</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Aware and Have Used; 2 = Aware but Have Not Used</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q27</td>
+<td class="gt_row gt_left" headers="variable_label">currently have loan</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">2</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Yes; 2 = No</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q30</td>
+<td class="gt_row gt_left" headers="variable_label">CU rates lower</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">5</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q31</td>
+<td class="gt_row gt_left" headers="variable_label">CU confidential</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q32</td>
+<td class="gt_row gt_left" headers="variable_label">CU is prompt</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q33</td>
+<td class="gt_row gt_left" headers="variable_label">CU meets needs of members</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">4</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q34</td>
+<td class="gt_row gt_left" headers="variable_label">CU loan applications simple</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">5</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Strongly Disagree; 5 = Strongly Agree</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q37</td>
+<td class="gt_row gt_left" headers="variable_label">overall rating</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">5</td>
+<td class="gt_row gt_left" headers="value_labels">1 = Excellent; 2 = Good; 3 = Average; 4 = Poor; 5 = Very Poor; 6 = No Opinion</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">OverallEmployeePerformace</td>
+<td class="gt_row gt_left" headers="variable_label"></td>
+<td class="gt_row gt_left" headers="class">numeric</td>
+<td class="gt_row gt_right" headers="n_distinct">10</td>
+<td class="gt_row gt_left" headers="value_labels"></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q38</td>
+<td class="gt_row gt_left" headers="variable_label">headquarter</td>
+<td class="gt_row gt_left" headers="class">haven_labelled</td>
+<td class="gt_row gt_right" headers="n_distinct">2</td>
+<td class="gt_row gt_left" headers="value_labels">1 = yes; 2 = no</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">employeeperformance</td>
+<td class="gt_row gt_left" headers="variable_label"></td>
+<td class="gt_row gt_left" headers="class">numeric</td>
+<td class="gt_row gt_right" headers="n_distinct">10</td>
+<td class="gt_row gt_left" headers="value_labels"></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="data-dictionary-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="data-dictionary-interpretation">3.1 Data Dictionary Interpretation</h2>
+<p><strong>1. How many variables are included in the data dictionary?</strong></p>
+<p>The data dictionary contains 34 variables and provides information about each variable’s name, descriptive label, data type, number of distinct values, and response value labels.</p>
+<p><strong>2. What types of variables are included in the dataset?</strong></p>
+<p>The dataset contains mainly SPSS-labelled survey variables, which represent questionnaire responses. It also includes two numeric variables representing precomputed employee performance measures.</p>
+<p><strong>3. Why are variable labels and value labels important?</strong></p>
+<p>Variable labels explain what each survey question measures, while value labels identify the meaning of numerical response categories. These labels are essential for interpreting the data correctly and preventing coding errors.</p>
+<p><strong>4. Why is it important to examine the number of distinct values?</strong></p>
+<p>Examining distinct values helps identify unexpected response codes, potential data entry errors, and differences between variables that use different measurement scales.</p>
+</section>
+</section>
+<section id="improving-variable-metadata" class="level1">
+<h1>4. Improving Variable Metadata</h1>
+<p>Before cleaning the dataset, the original response codes and value labels are examined using the questionnaire and Case Exhibit 31.2.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect variable labels and response codes</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"q7"</span>, <span class="st">"q8"</span>, <span class="st">"q12"</span>, <span class="st">"q13"</span>, <span class="st">"q37"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> variables) {</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Variable:"</span>, v, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Variable label:"</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">attr</span>(data_raw[[v]], <span class="st">"label"</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">attr</span>(data_raw[[v]], <span class="st">"labels"</span>))</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Variable: q7 
+Variable label: savings rates 
+ Very High       High    Average        Low   Very Low No Opinion 
+         1          2          3          4          5          6 
+
+Variable: q8 
+Variable label: statement frequency 
+ Very High       High    Average        Low   Very Low No Opinion 
+         1          2          3          4          5          6 
+
+Variable: q12 
+Variable label: Account Confidential 
+Yes  No 
+  1   2 
+
+Variable: q13 
+Variable label: regular share account 
+    Aware and Have Used Aware but Have Not Used 
+                      1                       2 
+
+Variable: q37 
+Variable label: overall rating 
+ Excellent       Good    Average       Poor  Very Poor No Opinion 
+         1          2          3          4          5          6 </code></pre>
+</div>
+</div>
+<section id="correcting-variable-labels-and-value-labels" class="level2">
+<h2 class="anchored" data-anchor-id="correcting-variable-labels-and-value-labels">4.1 Correcting Variable Labels and Value Labels</h2>
+<p>The original dataset is preserved, and a separate copy is created to correct incomplete or inaccurate metadata based on the questionnaire.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy of the original dataset</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_labelled <span class="ot">&lt;-</span> data_raw</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct the descriptive label for q8</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q8, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Loan interest rates"</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the missing response category to awareness questions</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> <span class="fu">paste0</span>(<span class="st">"q"</span>, <span class="dv">13</span><span class="sc">:</span><span class="dv">26</span>)) {</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(data_labelled[[v]], <span class="st">"labels"</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Aware and Have Used"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Aware but Have Not Used"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unaware"</span> <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add missing response category for Yes/No questions</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"q11"</span>, <span class="st">"q12"</span>, <span class="st">"q27"</span>, <span class="st">"q38"</span>)) {</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(data_labelled[[v]], <span class="st">"labels"</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Yes"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No answer"</span> <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct q37 response labels</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q37, <span class="st">"labels"</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Excellent"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Good"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Average"</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Poor"</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Very Poor"</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"No answer"</span> <span class="ot">=</span> <span class="dv">6</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the corrected labels</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q8, <span class="st">"label"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Loan interest rates"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q13, <span class="st">"labels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Aware and Have Used Aware but Have Not Used                 Unaware 
+                      1                       2                       3 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q12, <span class="st">"labels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Yes        No No answer 
+        1         2         3 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data_labelled<span class="sc">$</span>q37, <span class="st">"labels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Excellent      Good   Average      Poor Very Poor No answer 
+        1         2         3         4         5         6 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-an-analysis-dataset" class="level1">
+<h1>5. Creating an Analysis Dataset</h1>
+<p>The analysis dataset retains only the original questionnaire variables. Precomputed variables are excluded so that composite measures can be evaluated independently.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_labelled <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">"^q</span><span class="sc">\\</span><span class="st">d+$"</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128  32</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "q3"  "q4"  "q5"  "q6"  "q7"  "q8"  "q9"  "q10" "q11" "q12" "q13" "q14"
+[13] "q15" "q16" "q17" "q18" "q19" "q20" "q21" "q22" "q23" "q24" "q25" "q26"
+[25] "q27" "q30" "q31" "q32" "q33" "q34" "q37" "q38"</code></pre>
+</div>
+</div>
+<section id="data-quality-checks" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-checks">5.1 Data Quality Checks</h2>
+<p>The following table examines the observed values and missing responses for each questionnaire variable.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric)) <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">everything</span>(),</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"variable"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_observed =</span> <span class="fu">paste</span>(</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sort</span>(<span class="fu">unique</span>(value[<span class="sc">!</span><span class="fu">is.na</span>(value)])),</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">collapse =</span> <span class="st">", "</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(value)),</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_missing =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(value)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> variable</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="ykufnypxye" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ykufnypxye table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ykufnypxye thead, #ykufnypxye tbody, #ykufnypxye tfoot, #ykufnypxye tr, #ykufnypxye td, #ykufnypxye th {
+  border-style: none;
+}
+
+#ykufnypxye p {
+  margin: 0;
+  padding: 0;
+}
+
+#ykufnypxye .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ykufnypxye .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ykufnypxye .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ykufnypxye .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ykufnypxye .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ykufnypxye .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ykufnypxye .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ykufnypxye .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ykufnypxye .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ykufnypxye .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ykufnypxye .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ykufnypxye .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ykufnypxye .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ykufnypxye .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ykufnypxye .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ykufnypxye .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ykufnypxye .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ykufnypxye .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ykufnypxye .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ykufnypxye .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ykufnypxye .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ykufnypxye .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ykufnypxye .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ykufnypxye .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ykufnypxye .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ykufnypxye .gt_left {
+  text-align: left;
+}
+
+#ykufnypxye .gt_center {
+  text-align: center;
+}
+
+#ykufnypxye .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ykufnypxye .gt_font_normal {
+  font-weight: normal;
+}
+
+#ykufnypxye .gt_font_bold {
+  font-weight: bold;
+}
+
+#ykufnypxye .gt_font_italic {
+  font-style: italic;
+}
+
+#ykufnypxye .gt_super {
+  font-size: 65%;
+}
+
+#ykufnypxye .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ykufnypxye .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ykufnypxye .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ykufnypxye .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ykufnypxye .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ykufnypxye .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ykufnypxye .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#ykufnypxye .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ykufnypxye div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="values_observed" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">values_observed</th>
+<th id="n_missing" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">n_missing</th>
+<th id="pct_missing" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">pct_missing</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q3</td>
+<td class="gt_row gt_right" headers="values_observed">3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q4</td>
+<td class="gt_row gt_right" headers="values_observed">2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q5</td>
+<td class="gt_row gt_right" headers="values_observed">3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q6</td>
+<td class="gt_row gt_right" headers="values_observed">2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q7</td>
+<td class="gt_row gt_right" headers="values_observed">2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">10</td>
+<td class="gt_row gt_right" headers="pct_missing">7.8</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q8</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">21</td>
+<td class="gt_row gt_right" headers="pct_missing">16.4</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q9</td>
+<td class="gt_row gt_right" headers="values_observed">3, 4</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q10</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3, 4</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q11</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q12</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q13</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q14</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q15</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q16</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q17</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q18</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q19</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q20</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q21</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q22</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q23</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q24</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q25</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q26</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q27</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q30</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q31</td>
+<td class="gt_row gt_right" headers="values_observed">1, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q32</td>
+<td class="gt_row gt_right" headers="values_observed">2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q33</td>
+<td class="gt_row gt_right" headers="values_observed">2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q34</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q37</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2, 3, 4, 5</td>
+<td class="gt_row gt_right" headers="n_missing">7</td>
+<td class="gt_row gt_right" headers="pct_missing">5.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q38</td>
+<td class="gt_row gt_right" headers="values_observed">1, 2</td>
+<td class="gt_row gt_right" headers="n_missing">0</td>
+<td class="gt_row gt_right" headers="pct_missing">0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="recoding-special-responses" class="level1">
+<h1>6. Recoding Special Responses</h1>
+<p>Responses such as “No Opinion” and “No answer” are treated as missing values because they do not represent meaningful ratings.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(q7, q8, q37),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">sum</span>(.x <span class="sc">==</span> <span class="dv">6</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+     q7    q8   q37
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     0     0     0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(q7, q8, q37),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">na_if</span>(.x, <span class="dv">6</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify missing values after recoding</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data[<span class="fu">c</span>(<span class="st">"q7"</span>, <span class="st">"q8"</span>, <span class="st">"q37"</span>)]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> q7  q8 q37 
+ 10  21   7 </code></pre>
+</div>
+</div>
+<section id="reverse-coding" class="level2">
+<h2 class="anchored" data-anchor-id="reverse-coding">6.1 Reverse Coding</h2>
+<p>Selected questionnaire items are reverse-coded so that higher scores indicate more favorable evaluations. The original variables are preserved for comparison.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="dv">6</span> <span class="sc">-</span> <span class="fu">as.numeric</span>(q7),</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="dv">6</span> <span class="sc">-</span> <span class="fu">as.numeric</span>(q8),</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="dv">5</span> <span class="sc">-</span> <span class="fu">as.numeric</span>(q10),</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="dv">6</span> <span class="sc">-</span> <span class="fu">as.numeric</span>(q37)</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add descriptive variable labels</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q7r, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Savings rates (higher = higher rates)"</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q8r, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Loan interest rates (reversed scale)"</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q10r, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Statement accuracy (higher = better)"</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q37r, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Overall rating (higher = better)"</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add response value labels</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>rate_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Very Low"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Low"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Average"</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"High"</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Very High"</span> <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q7r, <span class="st">"labels"</span>) <span class="ot">&lt;-</span> rate_labels</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q8r, <span class="st">"labels"</span>) <span class="ot">&lt;-</span> rate_labels</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q10r, <span class="st">"labels"</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Poor"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Fair"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Good"</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Excellent"</span> <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>q37r, <span class="st">"labels"</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Very Poor"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Poor"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Average"</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Good"</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb43-39"><a href="#cb43-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Excellent"</span> <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb43-40"><a href="#cb43-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-41"><a href="#cb43-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-42"><a href="#cb43-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the reverse coding</span></span>
+<span id="cb43-43"><a href="#cb43-43" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q7, q7r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  q7              q7r     n
+  &lt;dbl+lbl&gt;     &lt;dbl&gt; &lt;int&gt;
+1  2 [High]         4    22
+2  3 [Average]      3    83
+3  4 [Low]          2    12
+4  5 [Very Low]     1     1
+5 NA               NA    10</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q8, q8r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  q8               q8r     n
+  &lt;dbl+lbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1  1 [Very High]     5     4
+2  2 [High]          4    26
+3  3 [Average]       3    59
+4  4 [Low]           2    17
+5  5 [Very Low]      1     1
+6 NA                NA    21</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q10, q10r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  q10            q10r     n
+  &lt;dbl+lbl&gt;     &lt;dbl&gt; &lt;int&gt;
+1 1 [Excellent]     4    68
+2 2 [Good]          3    54
+3 3 [Fair]          2     4
+4 4 [Poor]          1     2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q37, q37r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  q37             q37r     n
+  &lt;dbl+lbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1  1 [Excellent]     5    31
+2  2 [Good]          4    71
+3  3 [Average]       3    16
+4  4 [Poor]          2     2
+5  5 [Very Poor]     1     1
+6 NA                NA     7</code></pre>
+</div>
+</div>
+</section>
+<section id="reverse-coding-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="reverse-coding-interpretation">6.2 Reverse Coding Interpretation</h2>
+<p><strong>1. Why is a reversal inappropriate for q9? How could q9 be coded to determine whether the frequency was about right?</strong></p>
+<p>Reverse coding is inappropriate for q9 because the most favorable response, “About Right,” is in the middle of the scale rather than at either extreme. A new binary variable could be created where 1 indicates “About Right” and 0 indicates all other responses.</p>
+<p><strong>2. Why should q13 to q26 not be reversed or averaged into one score?</strong></p>
+<p>These variables measure awareness and use of different financial services rather than evaluations on a continuous scale. Reversing or averaging them could produce misleading results. Frequencies and percentages for each service would provide a more meaningful summary.</p>
+</section>
+</section>
+<section id="evaluating-candidate-multi-item-measures" class="level1">
+<h1>7. Evaluating Candidate Multi-Item Measures</h1>
+<section id="employee-proficiency" class="level2">
+<h2 class="anchored" data-anchor-id="employee-proficiency">7.1 Employee Proficiency</h2>
+<p>Questions q3 through q6 evaluate employee courtesy, helpfulness, professionalism, and availability. Cronbach’s alpha and a one-factor analysis are used to evaluate whether these items can form a composite index.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select employee proficiency items and convert to numeric</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>employee_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q3<span class="sc">:</span>q6) <span class="sc">|&gt;</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric))</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Cronbach's alpha</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>employee_alpha <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(employee_items)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>employee_alpha<span class="sc">$</span>total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> raw_alpha std.alpha   G6(smc) average_r      S/N        ase     mean        sd
+ 0.8662692 0.8692036 0.8504953 0.6242532 6.645468 0.01943497 4.205078 0.5939604
+  median_r
+ 0.6549509</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>employee_alpha<span class="sc">$</span>item.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     n     raw.r     std.r     r.cor    r.drop     mean        sd
+q3 128 0.7998763 0.8116480 0.7311828 0.6565744 4.351562 0.6591553
+q4 128 0.9057849 0.9073371 0.8846793 0.8225485 4.312500 0.6958822
+q5 128 0.8484022 0.8534227 0.7787324 0.7332641 4.078125 0.6593886
+q6 128 0.8342116 0.8174357 0.7315973 0.6730198 4.078125 0.7897909</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform one-factor analysis</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>employee_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  employee_items,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">"none"</span>,</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">"minres"</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>loadings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+   MR1  
+q3 0.722
+q4 0.923
+q5 0.792
+q6 0.729
+
+                 MR1
+SS loadings    2.533
+Proportion Var 0.633</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>communality</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       q3        q4        q5        q6 
+0.5217014 0.8526608 0.6271651 0.5311216 </code></pre>
+</div>
+</div>
+<section id="employee-proficiency-reliability-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="employee-proficiency-reliability-interpretation">Employee Proficiency Reliability Interpretation</h3>
+<p>Cronbach’s alpha for the four employee proficiency items (q3–q6) was 0.866, indicating good internal consistency. This suggests that the items measuring employee courtesy, helpfulness, professionalism, and availability are closely related and may be appropriate for constructing a composite Employee Proficiency Index, pending evaluation of the factor analysis results.</p>
+</section>
+<section id="employee-proficiency-factor-analysis-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="employee-proficiency-factor-analysis-interpretation">Employee Proficiency Factor Analysis Interpretation</h3>
+<p>The one-factor analysis produced factor loadings ranging from 0.722 to 0.923, with all four items showing substantial positive relationships with the underlying factor.</p>
+<p>The strongest loading was observed for employee helpfulness (q4 = 0.923). The single factor explained 63.3% of the total variance.</p>
+<p>Combined with Cronbach’s alpha of 0.866, these results support using the four items to construct an Employee Proficiency Index.</p>
+</section>
+</section>
+<section id="operational-effectiveness" class="level2">
+<h2 class="anchored" data-anchor-id="operational-effectiveness">7.2 Operational Effectiveness</h2>
+<p>Questions q30 through q34 evaluate members’ perceptions of the credit union’s operational effectiveness. Reliability analysis and one-factor analysis are conducted to assess whether these items can form a composite measure.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>operational_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q30<span class="sc">:</span>q34) <span class="sc">|&gt;</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric))</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>operational_alpha <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(operational_items)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>operational_alpha<span class="sc">$</span>total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> raw_alpha std.alpha   G6(smc) average_r      S/N        ase    mean        sd
+ 0.5392198 0.5358426 0.5180742 0.1875786 1.154442 0.06357328 3.55625 0.4531169
+  median_r
+ 0.2004547</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>operational_alpha<span class="sc">$</span>item.stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      n     raw.r     std.r     r.cor    r.drop     mean        sd
+q30 128 0.6442688 0.6139773 0.4449249 0.3235473 3.062500 0.8671612
+q31 128 0.5497782 0.5757321 0.3998859 0.2866290 3.945312 0.6793767
+q32 128 0.7280268 0.7212655 0.6587487 0.4828311 3.718750 0.7930555
+q33 128 0.4983259 0.5295565 0.2985046 0.2224293 3.593750 0.6808691
+q34 128 0.5324230 0.5177743 0.3272465 0.2156533 3.460938 0.7827102</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>operational_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  operational_items,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">"none"</span>,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">"minres"</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>operational_fa<span class="sc">$</span>loadings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+    MR1  
+q30 0.402
+q31 0.379
+q32 0.786
+q33 0.295
+q34 0.354
+
+                 MR1
+SS loadings    1.135
+Proportion Var 0.227</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>operational_fa<span class="sc">$</span>communality</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       q30        q31        q32        q33        q34 
+0.16134603 0.14392755 0.61755551 0.08681649 0.12566105 </code></pre>
+</div>
+</div>
+<section id="operational-effectiveness-factor-analysis-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="operational-effectiveness-factor-analysis-interpretation">Operational Effectiveness Factor Analysis Interpretation</h3>
+<p>The one-factor analysis of operational effectiveness (q30–q34) produced factor loadings ranging from 0.295 to 0.786. Question q32 had the strongest loading (0.786), while q33 had the weakest (0.295).</p>
+<p>The single factor explained only 22.7% of the total variance. These results suggest that the five items may not represent a single underlying construct adequately.</p>
+<p>Therefore, creating one Operational Effectiveness Index is not recommended based on the factor analysis alone. The reliability estimate and questionnaire wording should also be considered before making the final decision.</p>
+</section>
+<section id="operational-effectiveness-reliability-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="operational-effectiveness-reliability-interpretation">Operational Effectiveness Reliability Interpretation</h3>
+<p>Cronbach’s alpha for the five operational effectiveness items (q30–q34) was 0.539, indicating low internal consistency.</p>
+<p>The one-factor analysis explained only 22.7% of the total variance, with factor loadings ranging from 0.295 to 0.786. These findings suggest that the five questions do not adequately represent a single underlying construct.</p>
+<p>Therefore, the five items should be analyzed individually rather than combined into one Operational Effectiveness Index.</p>
+</section>
+</section>
+</section>
+<section id="creating-the-employee-proficiency-index" class="level1">
+<h1>8. Creating the Employee Proficiency Index</h1>
+<p>Based on the reliability and factor analysis results, an Employee Proficiency Index is created by averaging questions q3 through q6.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee_proficiency_index =</span> <span class="fu">rowMeans</span>(</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">across</span>(q3<span class="sc">:</span>q6),</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add variable label</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(data<span class="sc">$</span>employee_proficiency_index, <span class="st">"label"</span>) <span class="ot">&lt;-</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Employee Proficiency Index (Mean of q3-q6)"</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Descriptive statistics</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data<span class="sc">$</span>employee_proficiency_index)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  2.750   4.000   4.000   4.205   4.750   5.000 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>employee_proficiency_index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5939604</code></pre>
+</div>
+</div>
+<section id="employee-proficiency-index-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="employee-proficiency-index-interpretation">8.1 Employee Proficiency Index Interpretation</h2>
+<p>The Employee Proficiency Index was calculated by averaging four questionnaire items (q3–q6), measuring employee courtesy, helpfulness, professionalism, and availability.</p>
+<p>The resulting index had a mean of 4.205 and a standard deviation of 0.594, with observed scores ranging from 2.75 to 5.00.</p>
+<p>These results suggest that respondents generally evaluated credit union employees favorably. The index was supported by good internal consistency (Cronbach’s alpha = 0.866) and a one-factor solution explaining 63.3% of the variance.</p>
+<p>In contrast, an Operational Effectiveness Index was not created because the corresponding five items demonstrated low internal consistency (Cronbach’s alpha = 0.539) and weak evidence of a common factor.</p>
+</section>
+</section>
+<section id="data-preparation-narrative" class="level1">
+<h1>9. Data Preparation Narrative</h1>
+<div class="callout callout-style-default callout-note callout-titled" title="Data Preparation Narrative">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Data Preparation Narrative
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Employees Federal Credit Union (EFCU) survey dataset was imported from SPSS into R using the haven package. The original dataset contained 128 observations and 34 variables.</p>
+<p>A data dictionary was created to examine variable names, descriptive labels, response categories, data types, and distinct values. The questionnaire was used to interpret nominal, ordinal, and Likert-type response scales.</p>
+<p>Several metadata corrections were performed. The descriptive label for q8 was corrected to identify loan interest rates. Missing response labels were added to service awareness questions (q13–q26), and selected Yes/No variables were updated to include the “No answer” category.</p>
+<p>An analysis dataset was created using the 32 original questionnaire variables. Two precomputed employee performance variables were excluded to allow the composite measure to be evaluated independently.</p>
+<p>Special responses such as “No Opinion” were treated as missing values. The original SPSS import already contained missing observations for q7 (10), q8 (21), and q37 (7). These values were preserved during data cleaning.</p>
+<p>Four variables (q7, q8, q10, and q37) were reverse-coded to make higher scores represent more favorable evaluations. The transformations were verified using frequency tables comparing original and reversed values. Question q9 was not reverse-coded because its ideal response was located in the middle of the scale.</p>
+<p>Reliability and factor analyses were conducted to evaluate two candidate composite measures.</p>
+<p>Employee Proficiency (q3–q6) demonstrated good internal consistency (Cronbach’s alpha = 0.866), with factor loadings ranging from 0.722 to 0.923. The single factor explained 63.3% of the variance. An Employee Proficiency Index was therefore created by averaging the four items. The index had a mean of 4.205 and a standard deviation of 0.594.</p>
+<p>Operational Effectiveness (q30–q34) demonstrated lower internal consistency (Cronbach’s alpha = 0.539). The one-factor analysis explained 22.7% of the variance, suggesting that the five items do not adequately represent a single underlying construct. Consequently, no Operational Effectiveness Index was created.</p>
+<p>The analysis is limited by missing responses in selected variables, the ordinal nature of individual questionnaire items, and the possibility that operational effectiveness encompasses multiple distinct dimensions. These limitations should be considered when interpreting subsequent analyses.</p>
+</div>
+</div>
+</section>
+<section id="final-data-dictionary-verification" class="level1">
+<h1>10. Final Data Dictionary Verification</h1>
+<p>The final data dictionary is reviewed to verify that all original questionnaire variables, reverse-coded variables, and the Employee Proficiency Index are included in the prepared dataset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>final_dictionary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(data),</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable_label =</span> <span class="fu">sapply</span>(</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    data,</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) {</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>      label <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">"label"</span>)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(label)) <span class="st">""</span> <span class="cf">else</span> label</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">missing_values =</span> <span class="fu">sapply</span>(</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>    data,</span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>final_dictionary <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="grdnvvwgln" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#grdnvvwgln table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#grdnvvwgln thead, #grdnvvwgln tbody, #grdnvvwgln tfoot, #grdnvvwgln tr, #grdnvvwgln td, #grdnvvwgln th {
+  border-style: none;
+}
+
+#grdnvvwgln p {
+  margin: 0;
+  padding: 0;
+}
+
+#grdnvvwgln .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#grdnvvwgln .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#grdnvvwgln .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#grdnvvwgln .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#grdnvvwgln .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#grdnvvwgln .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#grdnvvwgln .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#grdnvvwgln .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#grdnvvwgln .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#grdnvvwgln .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#grdnvvwgln .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#grdnvvwgln .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#grdnvvwgln .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#grdnvvwgln .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#grdnvvwgln .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#grdnvvwgln .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#grdnvvwgln .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#grdnvvwgln .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#grdnvvwgln .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#grdnvvwgln .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#grdnvvwgln .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#grdnvvwgln .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#grdnvvwgln .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#grdnvvwgln .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#grdnvvwgln .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#grdnvvwgln .gt_left {
+  text-align: left;
+}
+
+#grdnvvwgln .gt_center {
+  text-align: center;
+}
+
+#grdnvvwgln .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#grdnvvwgln .gt_font_normal {
+  font-weight: normal;
+}
+
+#grdnvvwgln .gt_font_bold {
+  font-weight: bold;
+}
+
+#grdnvvwgln .gt_font_italic {
+  font-style: italic;
+}
+
+#grdnvvwgln .gt_super {
+  font-size: 65%;
+}
+
+#grdnvvwgln .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#grdnvvwgln .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#grdnvvwgln .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#grdnvvwgln .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#grdnvvwgln .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#grdnvvwgln .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#grdnvvwgln .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#grdnvvwgln .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#grdnvvwgln div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="variable_label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable_label</th>
+<th id="missing_values" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">missing_values</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q3</td>
+<td class="gt_row gt_left" headers="variable_label">Employees are Courteous</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q4</td>
+<td class="gt_row gt_left" headers="variable_label">employees are helpful</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q5</td>
+<td class="gt_row gt_left" headers="variable_label">employees are professional</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q6</td>
+<td class="gt_row gt_left" headers="variable_label">employees are available</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q7</td>
+<td class="gt_row gt_left" headers="variable_label">savings rates</td>
+<td class="gt_row gt_right" headers="missing_values">10</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q8</td>
+<td class="gt_row gt_left" headers="variable_label">Loan interest rates</td>
+<td class="gt_row gt_right" headers="missing_values">21</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q9</td>
+<td class="gt_row gt_left" headers="variable_label">statement frequency</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q10</td>
+<td class="gt_row gt_left" headers="variable_label">statement accuracy</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q11</td>
+<td class="gt_row gt_left" headers="variable_label">statement understandable</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q12</td>
+<td class="gt_row gt_left" headers="variable_label">Account Confidential</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q13</td>
+<td class="gt_row gt_left" headers="variable_label">regular share account</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q14</td>
+<td class="gt_row gt_left" headers="variable_label">special subaccounts</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q15</td>
+<td class="gt_row gt_left" headers="variable_label">Christmas club account</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q16</td>
+<td class="gt_row gt_left" headers="variable_label">IRA</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q17</td>
+<td class="gt_row gt_left" headers="variable_label">Master credit card</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q18</td>
+<td class="gt_row gt_left" headers="variable_label">signature loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q19</td>
+<td class="gt_row gt_left" headers="variable_label">new car loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q20</td>
+<td class="gt_row gt_left" headers="variable_label">late model car loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q21</td>
+<td class="gt_row gt_left" headers="variable_label">older model car loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q22</td>
+<td class="gt_row gt_left" headers="variable_label">household goods loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q23</td>
+<td class="gt_row gt_left" headers="variable_label">recreational loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q24</td>
+<td class="gt_row gt_left" headers="variable_label">share collateralized loan</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q25</td>
+<td class="gt_row gt_left" headers="variable_label">IRA loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q26</td>
+<td class="gt_row gt_left" headers="variable_label">line of credit loans</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q27</td>
+<td class="gt_row gt_left" headers="variable_label">currently have loan</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q30</td>
+<td class="gt_row gt_left" headers="variable_label">CU rates lower</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q31</td>
+<td class="gt_row gt_left" headers="variable_label">CU confidential</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q32</td>
+<td class="gt_row gt_left" headers="variable_label">CU is prompt</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q33</td>
+<td class="gt_row gt_left" headers="variable_label">CU meets needs of members</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q34</td>
+<td class="gt_row gt_left" headers="variable_label">CU loan applications simple</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q37</td>
+<td class="gt_row gt_left" headers="variable_label">overall rating</td>
+<td class="gt_row gt_right" headers="missing_values">7</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q38</td>
+<td class="gt_row gt_left" headers="variable_label">headquarter</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q7r</td>
+<td class="gt_row gt_left" headers="variable_label">Savings rates (higher = higher rates)</td>
+<td class="gt_row gt_right" headers="missing_values">10</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q8r</td>
+<td class="gt_row gt_left" headers="variable_label">Loan interest rates (reversed scale)</td>
+<td class="gt_row gt_right" headers="missing_values">21</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">q10r</td>
+<td class="gt_row gt_left" headers="variable_label">Statement accuracy (higher = better)</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">q37r</td>
+<td class="gt_row gt_left" headers="variable_label">Overall rating (higher = better)</td>
+<td class="gt_row gt_right" headers="missing_values">7</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">employee_proficiency_index</td>
+<td class="gt_row gt_left" headers="variable_label">Employee Proficiency Index (Mean of q3-q6)</td>
+<td class="gt_row gt_right" headers="missing_values">0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify dimensions</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128  37</code></pre>
+</div>
+</div>
+</section>
+<section id="exporting-the-cleaned-dataset" class="level1">
+<h1>11. Exporting the Cleaned Dataset</h1>
+<p>The final prepared dataset is exported to SPSS format for reproducibility and future analysis. The original raw dataset remains unchanged.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export the prepared dataset</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>haven<span class="sc">::</span><span class="fu">write_sav</span>(</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  data,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"CLJR_Case31_cleaned.sav"</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify that the file was created</span></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(<span class="st">"CLJR_Case31_cleaned.sav"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify dataset dimensions</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128  37</code></pre>
+</div>
+</div>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="github-repository" class="level2">
+<h2 class="anchored" data-anchor-id="github-repository">GitHub Repository</h2>
+<p>GitHub repository link: To be added after publication.</p>
+</section>
+<section id="github-pages" class="level2">
+<h2 class="anchored" data-anchor-id="github-pages">GitHub Pages</h2>
+<p>Published HTML report link: To be added after publication.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

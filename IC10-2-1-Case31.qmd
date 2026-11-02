@@ -1,0 +1,557 @@
+
+---
+title: "IC10-2-1: Data Preparation with Case 31"
+author: "Carmen Lia Jimenez Rodriguez"
+format: html
+editor: source
+---
+
+# 1. Importing the SPSS Dataset
+
+This report documents the preparation and cleaning of the Employees Federal Credit Union (EFCU) survey dataset using R.
+
+```{r}
+#| label: import-data
+
+library(haven)
+
+data_raw <- read_sav("Case 31 Data_efcu_1.sav")
+
+dim(data_raw)
+names(data_raw)
+head(data_raw)
+```
+
+
+# 2. Initial Data Inspection
+
+The dataset is examined to identify variable types, labels, and missing values before data cleaning.
+
+```{r}
+#| label: data-inspection
+
+# Examine dataset structure
+str(data_raw)
+
+# Examine variable labels
+sapply(data_raw, function(x) attr(x, "label"))
+
+# Count missing values by variable
+colSums(is.na(data_raw))
+
+# Examine descriptive statistics
+summary(data_raw)
+```
+
+## 2. Initial Data Inspection: Questions and Answers
+
+**1. How many rows and columns are in the imported data?**
+
+The imported dataset contains 128 rows (observations) and 34 columns (variables).
+
+**2. What are the variable names?**
+
+The dataset contains questionnaire variables q3 through q27, q30 through q34, q37, and q38, as well as two precomputed variables: OverallEmployeePerformace and employeeperformance.
+
+**3. Which variables look like questionnaire items, and which look like precomputed variables?**
+
+The variables beginning with "q" represent individual questionnaire items. OverallEmployeePerformace and employeeperformance appear to be precomputed measures of employee performance.
+
+**4. What is the difference between a variable label and a value label?**
+
+A variable label describes what a variable measures, while a value label explains the meaning of a specific numerical response. For example, q3 measures employee courtesy, and the values 1 and 5 represent "Strongly Disagree" and "Strongly Agree."
+
+**5. Which variables contain missing values?**
+
+Three variables contain missing values: q7 has 10 missing observations, q8 has 21, and q37 has 7. These missing responses must be considered during data cleaning.
+
+
+# 3. Data Dictionary
+
+The following table documents the original SPSS variables, their descriptive labels, data types, distinct values, and response categories.
+
+```{r}
+#| label: data-dictionary
+
+library(tidyverse)
+library(gt)
+
+data_dictionary <- tibble(
+  variable = names(data_raw),
+
+  variable_label = map_chr(
+    data_raw,
+    function(x) {
+      label <- attr(x, "label")
+      if (is.null(label)) "" else label
+    }
+  ),
+
+  class = map_chr(
+    data_raw,
+    function(x) class(x)[1]
+  ),
+
+  n_distinct = map_int(
+    data_raw,
+    function(x) n_distinct(x, na.rm = TRUE)
+  ),
+
+  value_labels = map_chr(
+    data_raw,
+    function(x) {
+      labs <- attr(x, "labels")
+      if (is.null(labs)) {
+        ""
+      } else {
+        paste(
+          paste0(labs, " = ", names(labs)),
+          collapse = "; "
+        )
+      }
+    }
+  )
+)
+
+data_dictionary |> gt()
+```
+
+## 3.1 Data Dictionary Interpretation
+
+**1. How many variables are included in the data dictionary?**
+
+The data dictionary contains 34 variables and provides information about each variable's name, descriptive label, data type, number of distinct values, and response value labels.
+
+**2. What types of variables are included in the dataset?**
+
+The dataset contains mainly SPSS-labelled survey variables, which represent questionnaire responses. It also includes two numeric variables representing precomputed employee performance measures.
+
+**3. Why are variable labels and value labels important?**
+
+Variable labels explain what each survey question measures, while value labels identify the meaning of numerical response categories. These labels are essential for interpreting the data correctly and preventing coding errors.
+
+**4. Why is it important to examine the number of distinct values?**
+
+Examining distinct values helps identify unexpected response codes, potential data entry errors, and differences between variables that use different measurement scales.
+
+
+# 4. Improving Variable Metadata
+
+Before cleaning the dataset, the original response codes and value labels are examined using the questionnaire and Case Exhibit 31.2.
+
+```{r}
+#| label: inspect-value-labels
+
+# Inspect variable labels and response codes
+
+variables <- c("q7", "q8", "q12", "q13", "q37")
+
+for (v in variables) {
+  cat("\nVariable:", v, "\n")
+  cat("Variable label:",
+      attr(data_raw[[v]], "label"), "\n")
+  print(attr(data_raw[[v]], "labels"))
+}
+```
+
+## 4.1 Correcting Variable Labels and Value Labels
+
+The original dataset is preserved, and a separate copy is created to correct incomplete or inaccurate metadata based on the questionnaire.
+
+```{r}
+#| label: correct-metadata
+
+# Create a copy of the original dataset
+data_labelled <- data_raw
+
+# Correct the descriptive label for q8
+attr(data_labelled$q8, "label") <- "Loan interest rates"
+
+# Add the missing response category to awareness questions
+for (v in paste0("q", 13:26)) {
+  attr(data_labelled[[v]], "labels") <- c(
+    "Aware and Have Used" = 1,
+    "Aware but Have Not Used" = 2,
+    "Unaware" = 3
+  )
+}
+
+# Add missing response category for Yes/No questions
+for (v in c("q11", "q12", "q27", "q38")) {
+  attr(data_labelled[[v]], "labels") <- c(
+    "Yes" = 1,
+    "No" = 2,
+    "No answer" = 3
+  )
+}
+
+# Correct q37 response labels
+attr(data_labelled$q37, "labels") <- c(
+  "Excellent" = 1,
+  "Good" = 2,
+  "Average" = 3,
+  "Poor" = 4,
+  "Very Poor" = 5,
+  "No answer" = 6
+)
+
+# Verify the corrected labels
+attr(data_labelled$q8, "label")
+attr(data_labelled$q13, "labels")
+attr(data_labelled$q12, "labels")
+attr(data_labelled$q37, "labels")
+```
+
+# 5. Creating an Analysis Dataset
+
+The analysis dataset retains only the original questionnaire variables. Precomputed variables are excluded so that composite measures can be evaluated independently.
+
+```{r}
+#| label: analysis-copy
+
+data <- data_labelled |>
+  select(matches("^q\\d+$"))
+
+dim(data)
+names(data)
+```
+
+## 5.1 Data Quality Checks
+
+The following table examines the observed values and missing responses for each questionnaire variable.
+
+```{r}
+#| label: quality-checks
+
+data |>
+  mutate(across(everything(), as.numeric)) |>
+  pivot_longer(
+    everything(),
+    names_to = "variable",
+    values_to = "value"
+  ) |>
+  summarise(
+    values_observed = paste(
+      sort(unique(value[!is.na(value)])),
+      collapse = ", "
+    ),
+    n_missing = sum(is.na(value)),
+    pct_missing = round(mean(is.na(value)) * 100, 1),
+    .by = variable
+  ) |>
+  gt()
+```
+
+# 6. Recoding Special Responses
+
+Responses such as "No Opinion" and "No answer" are treated as missing values because they do not represent meaningful ratings.
+
+```{r}
+#| label: check-no-opinion
+
+data |>
+  summarise(
+    across(
+      c(q7, q8, q37),
+      ~ sum(.x == 6, na.rm = TRUE)
+    )
+  )
+```
+
+```{r}
+#| label: recode-no-opinion
+
+data <- data |>
+  mutate(
+    across(
+      c(q7, q8, q37),
+      ~ na_if(.x, 6)
+    )
+  )
+
+# Verify missing values after recoding
+colSums(is.na(data[c("q7", "q8", "q37")]))
+```
+
+## 6.1 Reverse Coding
+
+Selected questionnaire items are reverse-coded so that higher scores indicate more favorable evaluations. The original variables are preserved for comparison.
+
+```{r}
+#| label: reverse-code
+
+data <- data |>
+  mutate(
+    q7r = 6 - as.numeric(q7),
+    q8r = 6 - as.numeric(q8),
+    q10r = 5 - as.numeric(q10),
+    q37r = 6 - as.numeric(q37)
+  )
+
+# Add descriptive variable labels
+attr(data$q7r, "label") <- "Savings rates (higher = higher rates)"
+attr(data$q8r, "label") <- "Loan interest rates (reversed scale)"
+attr(data$q10r, "label") <- "Statement accuracy (higher = better)"
+attr(data$q37r, "label") <- "Overall rating (higher = better)"
+
+# Add response value labels
+rate_labels <- c(
+  "Very Low" = 1,
+  "Low" = 2,
+  "Average" = 3,
+  "High" = 4,
+  "Very High" = 5
+)
+
+attr(data$q7r, "labels") <- rate_labels
+attr(data$q8r, "labels") <- rate_labels
+
+attr(data$q10r, "labels") <- c(
+  "Poor" = 1,
+  "Fair" = 2,
+  "Good" = 3,
+  "Excellent" = 4
+)
+
+attr(data$q37r, "labels") <- c(
+  "Very Poor" = 1,
+  "Poor" = 2,
+  "Average" = 3,
+  "Good" = 4,
+  "Excellent" = 5
+)
+
+# Verify the reverse coding
+data |> count(q7, q7r)
+data |> count(q8, q8r)
+data |> count(q10, q10r)
+data |> count(q37, q37r)
+```
+
+## 6.2 Reverse Coding Interpretation
+
+**1. Why is a reversal inappropriate for q9? How could q9 be coded to determine whether the frequency was about right?**
+
+Reverse coding is inappropriate for q9 because the most favorable response, "About Right," is in the middle of the scale rather than at either extreme. A new binary variable could be created where 1 indicates "About Right" and 0 indicates all other responses.
+
+**2. Why should q13 to q26 not be reversed or averaged into one score?**
+
+These variables measure awareness and use of different financial services rather than evaluations on a continuous scale. Reversing or averaging them could produce misleading results. Frequencies and percentages for each service would provide a more meaningful summary.
+
+
+# 7. Evaluating Candidate Multi-Item Measures
+
+## 7.1 Employee Proficiency
+
+Questions q3 through q6 evaluate employee courtesy, helpfulness, professionalism, and availability. Cronbach's alpha and a one-factor analysis are used to evaluate whether these items can form a composite index.
+
+```{r}
+#| label: employee-reliability
+
+# Select employee proficiency items and convert to numeric
+employee_items <- data |>
+  select(q3:q6) |>
+  mutate(across(everything(), as.numeric))
+
+# Calculate Cronbach's alpha
+employee_alpha <- psych::alpha(employee_items)
+
+employee_alpha$total
+employee_alpha$item.stats
+```
+
+```{r}
+#| label: employee-factor-analysis
+
+# Perform one-factor analysis
+employee_fa <- psych::fa(
+  employee_items,
+  nfactors = 1,
+  rotate = "none",
+  fm = "minres"
+)
+
+employee_fa$loadings
+employee_fa$communality
+```
+
+### Employee Proficiency Reliability Interpretation
+
+Cronbach's alpha for the four employee proficiency items (q3–q6) was 0.866, indicating good internal consistency. This suggests that the items measuring employee courtesy, helpfulness, professionalism, and availability are closely related and may be appropriate for constructing a composite Employee Proficiency Index, pending evaluation of the factor analysis results.
+
+### Employee Proficiency Factor Analysis Interpretation
+
+The one-factor analysis produced factor loadings ranging from 0.722 to 0.923, with all four items showing substantial positive relationships with the underlying factor.
+
+The strongest loading was observed for employee helpfulness (q4 = 0.923). The single factor explained 63.3% of the total variance.
+
+Combined with Cronbach's alpha of 0.866, these results support using the four items to construct an Employee Proficiency Index. 
+
+
+
+## 7.2 Operational Effectiveness
+
+Questions q30 through q34 evaluate members' perceptions of the credit union's operational effectiveness. Reliability analysis and one-factor analysis are conducted to assess whether these items can form a composite measure.
+
+```{r}
+#| label: operational-reliability
+
+operational_items <- data |>
+  select(q30:q34) |>
+  mutate(across(everything(), as.numeric))
+
+operational_alpha <- psych::alpha(operational_items)
+
+operational_alpha$total
+operational_alpha$item.stats
+```
+
+```{r}
+#| label: operational-factor-analysis
+
+operational_fa <- psych::fa(
+  operational_items,
+  nfactors = 1,
+  rotate = "none",
+  fm = "minres"
+)
+
+operational_fa$loadings
+operational_fa$communality
+```
+### Operational Effectiveness Factor Analysis Interpretation
+
+The one-factor analysis of operational effectiveness (q30–q34) produced factor loadings ranging from 0.295 to 0.786. Question q32 had the strongest loading (0.786), while q33 had the weakest (0.295).
+
+The single factor explained only 22.7% of the total variance. These results suggest that the five items may not represent a single underlying construct adequately.
+
+Therefore, creating one Operational Effectiveness Index is not recommended based on the factor analysis alone. The reliability estimate and questionnaire wording should also be considered before making the final decision.
+
+### Operational Effectiveness Reliability Interpretation
+
+Cronbach's alpha for the five operational effectiveness items (q30–q34) was 0.539, indicating low internal consistency.
+
+The one-factor analysis explained only 22.7% of the total variance, with factor loadings ranging from 0.295 to 0.786. These findings suggest that the five questions do not adequately represent a single underlying construct.
+
+Therefore, the five items should be analyzed individually rather than combined into one Operational Effectiveness Index.
+
+
+# 8. Creating the Employee Proficiency Index
+
+Based on the reliability and factor analysis results, an Employee Proficiency Index is created by averaging questions q3 through q6.
+
+```{r}
+#| label: create-employee-index
+
+data <- data |>
+  mutate(
+    employee_proficiency_index = rowMeans(
+      across(q3:q6),
+      na.rm = TRUE
+    )
+  )
+
+# Add variable label
+attr(data$employee_proficiency_index, "label") <-
+  "Employee Proficiency Index (Mean of q3-q6)"
+
+# Descriptive statistics
+summary(data$employee_proficiency_index)
+
+sd(data$employee_proficiency_index, na.rm = TRUE)
+```
+## 8.1 Employee Proficiency Index Interpretation
+
+The Employee Proficiency Index was calculated by averaging four questionnaire items (q3–q6), measuring employee courtesy, helpfulness, professionalism, and availability.
+
+The resulting index had a mean of 4.205 and a standard deviation of 0.594, with observed scores ranging from 2.75 to 5.00.
+
+These results suggest that respondents generally evaluated credit union employees favorably. The index was supported by good internal consistency (Cronbach's alpha = 0.866) and a one-factor solution explaining 63.3% of the variance.
+
+In contrast, an Operational Effectiveness Index was not created because the corresponding five items demonstrated low internal consistency (Cronbach's alpha = 0.539) and weak evidence of a common factor.
+
+
+# 9. Data Preparation Narrative
+
+::: {.callout-note title="Data Preparation Narrative"}
+
+The Employees Federal Credit Union (EFCU) survey dataset was imported from SPSS into R using the haven package. The original dataset contained 128 observations and 34 variables.
+
+A data dictionary was created to examine variable names, descriptive labels, response categories, data types, and distinct values. The questionnaire was used to interpret nominal, ordinal, and Likert-type response scales.
+
+Several metadata corrections were performed. The descriptive label for q8 was corrected to identify loan interest rates. Missing response labels were added to service awareness questions (q13–q26), and selected Yes/No variables were updated to include the "No answer" category.
+
+An analysis dataset was created using the 32 original questionnaire variables. Two precomputed employee performance variables were excluded to allow the composite measure to be evaluated independently.
+
+Special responses such as "No Opinion" were treated as missing values. The original SPSS import already contained missing observations for q7 (10), q8 (21), and q37 (7). These values were preserved during data cleaning.
+
+Four variables (q7, q8, q10, and q37) were reverse-coded to make higher scores represent more favorable evaluations. The transformations were verified using frequency tables comparing original and reversed values. Question q9 was not reverse-coded because its ideal response was located in the middle of the scale.
+
+Reliability and factor analyses were conducted to evaluate two candidate composite measures.
+
+Employee Proficiency (q3–q6) demonstrated good internal consistency (Cronbach's alpha = 0.866), with factor loadings ranging from 0.722 to 0.923. The single factor explained 63.3% of the variance. An Employee Proficiency Index was therefore created by averaging the four items. The index had a mean of 4.205 and a standard deviation of 0.594.
+
+Operational Effectiveness (q30–q34) demonstrated lower internal consistency (Cronbach's alpha = 0.539). The one-factor analysis explained 22.7% of the variance, suggesting that the five items do not adequately represent a single underlying construct. Consequently, no Operational Effectiveness Index was created.
+
+The analysis is limited by missing responses in selected variables, the ordinal nature of individual questionnaire items, and the possibility that operational effectiveness encompasses multiple distinct dimensions. These limitations should be considered when interpreting subsequent analyses.
+
+:::
+
+
+# 10. Final Data Dictionary Verification
+
+The final data dictionary is reviewed to verify that all original questionnaire variables, reverse-coded variables, and the Employee Proficiency Index are included in the prepared dataset.
+
+```{r}
+#| label: final-data-dictionary
+
+final_dictionary <- tibble(
+  variable = names(data),
+  variable_label = sapply(
+    data,
+    function(x) {
+      label <- attr(x, "label")
+      if (is.null(label)) "" else label
+    }
+  ),
+  missing_values = sapply(
+    data,
+    function(x) sum(is.na(x))
+  )
+)
+
+final_dictionary |> gt()
+
+# Verify dimensions
+dim(data)
+```
+
+# 11. Exporting the Cleaned Dataset
+
+The final prepared dataset is exported to SPSS format for reproducibility and future analysis. The original raw dataset remains unchanged.
+
+```{r}
+#| label: export-cleaned-data
+
+# Export the prepared dataset
+haven::write_sav(
+  data,
+  "CLJR_Case31_cleaned.sav"
+)
+
+# Verify that the file was created
+file.exists("CLJR_Case31_cleaned.sav")
+
+# Verify dataset dimensions
+dim(data)
+```
+
+# Appendix
+
+## GitHub Repository
+
+GitHub repository link: To be added after publication.
+
+## GitHub Pages
+
+Published HTML report link: To be added after publication.
