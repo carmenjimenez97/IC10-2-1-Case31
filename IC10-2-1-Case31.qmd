@@ -1,8 +1,14 @@
 
+
 ---
 title: "IC10-2-1: Data Preparation with Case 31"
 author: "Carmen Lia Jimenez Rodriguez"
-format: html
+format:
+  html:
+    embed-resources: true
+    toc: true
+    code-fold: true
+    theme: cosmo
 editor: source
 ---
 
@@ -550,8 +556,8 @@ dim(data)
 
 ## GitHub Repository
 
-GitHub repository link: To be added after publication.
+[View the GitHub Repository](https://github.com/carmenjimenez97/IC10-2-1-Case31)
 
 ## GitHub Pages
 
-Published HTML report link: To be added after publication.
+[View the Published HTML Report](https://carmenjimenez97.github.io/IC10-2-1-Case31/IC10-2-1-Case31.html)
